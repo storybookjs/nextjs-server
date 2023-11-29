@@ -1,0 +1,8 @@
+import type { StorybookConfig } from '@storybook/nextjs-server';
+
+const config: StorybookConfig = {
+  stories: <%- stories %>,
+  addons: <%- addons %>,
+<%- extras %>};
+
+export default config;
