@@ -19,7 +19,7 @@ import { codeLog } from './cli/helpers.js';
 const logger = console;
 
 const DIRNAME = new URL('.', import.meta.url).pathname;
-const VERSION = '0.0.0-pr-24447-sha-83c43462';
+const VERSION = '0.0.0-pr-24447-sha-48644e16';
 
 const getEmptyDirMessage = (packageManagerType: PackageManagerName) => {
   const generatorCommandsMap = {
@@ -155,7 +155,7 @@ const init = async () => {
   spinner.text = 'Creating example stories';
   await createStories(options);
   await updateNextConfig();
-  spinner.text = 'Installing packages';
+  spinner.text = 'Installing dependencies';
   await packageManager.addDependencies(
     { installAsDevDependencies: true },
     _version([...corePackages, ...addons])
@@ -168,9 +168,9 @@ const init = async () => {
     "const withStorybook = require('@storybook/nextjs-server/next-config')({/* sb config */});",
     'module.exports = withStorybook({/* next config */});',
   ]);
-  logger.log('\n Then to run your NextJS app:\n');
+  logger.log('\nThen to run your NextJS app:\n');
   codeLog([packageManager.getRunCommand('dev')]);
-  logger.log('\n And open the URL:\n');
+  logger.log('\nAnd open the URL:\n');
   logger.log(chalk.cyan('https://localhost:3000/storybook'));
   logger.log();
 };
