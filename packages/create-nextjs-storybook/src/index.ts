@@ -19,7 +19,7 @@ import { codeLog } from './cli/helpers.js';
 const logger = console;
 
 const DIRNAME = new URL('.', import.meta.url).pathname;
-const VERSION = '0.0.0-pr-24447-sha-48644e16';
+const VERSION = '0.0.0-pr-24447-sha-c98bddd2';
 
 const getEmptyDirMessage = (packageManagerType: PackageManagerName) => {
   const generatorCommandsMap = {
