@@ -7,6 +7,7 @@ import boxen from 'boxen';
 import chalk from 'chalk';
 import { join } from 'path';
 import { render } from 'ejs';
+import ora from 'ora';
 
 import { JsPackageManagerFactory } from './cli/js-package-manager/index.js';
 import type { PackageManagerName } from './cli/js-package-manager/index.js';
@@ -108,6 +109,8 @@ const updateNextConfig = async () => {
 const _version = (pkgs: string[]) => pkgs.map((pkg) => `${pkg}@${VERSION}`);
 
 const init = async () => {
+  const spinner = ora('Adding Storybook').start();
+
   // FIXME:
   // - telemetry
   // - force package manager
@@ -147,13 +150,17 @@ const init = async () => {
     language,
     addons,
   };
+  spinner.text = 'Creating .storybook config';
   await createConfig(options);
+  spinner.text = 'Creating example stories';
   await createStories(options);
   await updateNextConfig();
+  spinner.text = 'Installing packages';
   await packageManager.addDependencies(
     { installAsDevDependencies: true },
     _version([...corePackages, ...addons])
   );
+  spinner.succeed('Done!');
   logger.log();
   logger.log(chalk.yellow('NOTE: installation is not 100% automated.\n'));
   logger.log(`To set up Storybook, replace contents of ${chalk.cyan('next-config.js')} with:\n`);
