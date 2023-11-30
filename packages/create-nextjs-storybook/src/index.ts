@@ -109,7 +109,15 @@ const updateNextConfig = async () => {
 const _version = (pkgs: string[]) => pkgs.map((pkg) => `${pkg}@${VERSION}`);
 
 const init = async () => {
+  let done = false;
   const spinner = ora('Adding Storybook').start();
+
+  // add a slight delay so that user can see what's going on
+  const status = (msg: string, delay: number) => {
+    setTimeout(() => {
+      if (!done) spinner.text = msg;
+    }, delay);
+  };
 
   // FIXME:
   // - telemetry
@@ -150,28 +158,29 @@ const init = async () => {
     language,
     addons,
   };
-  spinner.text = 'Creating .storybook config';
+  status('Creating .storybook config', 500);
   await createConfig(options);
-  spinner.text = 'Creating example stories';
+  status('Creating example stories', 1000);
   await createStories(options);
   await updateNextConfig();
-  spinner.text = 'Installing dependencies';
+  status('Installing package dependencies', 1500);
   await packageManager.addDependencies(
     { installAsDevDependencies: true },
     _version([...corePackages, ...addons])
   );
+
+  done = true;
   spinner.succeed('Done!');
-  logger.log();
-  logger.log(chalk.yellow('NOTE: installation is not 100% automated.\n'));
-  logger.log(`To set up Storybook, replace contents of ${chalk.cyan('next-config.js')} with:\n`);
+
+  logger.log(`\n1️⃣  Update ${chalk.bold(chalk.cyan('next.config.js'))}:\n`);
   codeLog([
     "const withStorybook = require('@storybook/nextjs-server/next-config')({/* sb config */});",
     'module.exports = withStorybook({/* next config */});',
   ]);
-  logger.log('\nThen to run your NextJS app:\n');
+  logger.log('\n2️⃣  Run your NextJS app:\n');
   codeLog([packageManager.getRunCommand('dev')]);
-  logger.log('\nAnd open the URL:\n');
-  logger.log(chalk.cyan('https://localhost:3000/storybook'));
+  logger.log('\n3️⃣  View your Storybook:\n');
+  logger.log(chalk.bold(chalk.cyan('  https://localhost:3000/storybook')));
   logger.log();
 };
 
