@@ -18,7 +18,7 @@ jobs:
         run: pnpm build
         working-directory: packages/create-nextjs-storybook
       - name: Install scripts
-        run: pnpm install
+        run: pnpm install && pnpm exec playwright install
         working-directory: scripts
       - uses: lhotari/action-upterm@v1
       - name: Run E2E Tests
