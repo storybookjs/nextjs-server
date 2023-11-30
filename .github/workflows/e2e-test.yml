@@ -16,7 +16,7 @@ jobs:
         working-directory: packages/create-nextjs-storybook
       - name: Build create-nextjs-storybook
         run: pnpm build
-        working-directory: scripts
+        working-directory: packages/create-nextjs-storybook
       - name: Install scripts
         run: pnpm install
         working-directory: scripts
