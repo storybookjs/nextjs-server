@@ -20,8 +20,18 @@ jobs:
       - name: Install scripts
         run: pnpm install && pnpm exec playwright install
         working-directory: scripts
-      # - uses: lhotari/action-upterm@v1
-      - name: Run E2E Tests
+      - name: Run E2E Tests (pages dir)
+        uses: BerniWittmann/background-server-action@v1
+        with:
+          cwd: scripts
+          start: APP_DIR=false pnpm ts-node test.ts
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 300
+          command: pnpm playwright test
+        env:
+          STORYBOOK_VERIFY_PORT_DELAY: 1000
+          TMPDIR: ${{ runner.temp }}
+      - name: Run E2E Tests (app dir)
         uses: BerniWittmann/background-server-action@v1
         with:
           cwd: scripts
