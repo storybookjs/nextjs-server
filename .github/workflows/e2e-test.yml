@@ -29,3 +29,5 @@ jobs:
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 300
           command: pnpm playwright test
+        env:
+          STORYBOOK_VERIFY_PORT_DELAY: 1000
