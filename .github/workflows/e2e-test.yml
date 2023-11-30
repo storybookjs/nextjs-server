@@ -23,5 +23,7 @@ jobs:
       - name: Run E2E Tests
         uses: BerniWittmann/background-server-action@v1
         with:
-          command: pnpm playwright test
+          cwd: scripts
           start: pnpm ts-node test.ts
+          wait-on: 'http://localhost:3000'
+          command: pnpm playwright test
