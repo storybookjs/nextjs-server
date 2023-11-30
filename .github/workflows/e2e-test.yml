@@ -31,3 +31,4 @@ jobs:
           command: pnpm playwright test
         env:
           STORYBOOK_VERIFY_PORT_DELAY: 1000
+          TMPDIR: ${{ runner.temp }}
