@@ -73,7 +73,8 @@ const createConfig = async ({ appDir, language, srcDir, addons }: CreateOptions)
 
   const mainExt = language === SupportedLanguage.JAVASCRIPT ? 'js' : 'ts';
   const stories = formatArray([`../${srcDir}**/*.stories.@(js|jsx|ts|tsx)`]);
-  const extras = appDir ? '' : "  docs: { autodocs: 'tag' },\n";
+  const extras =
+    "framework: '@storybook/nextjs-server',\n" + (appDir ? '' : "  docs: { autodocs: 'tag' },\n");
 
   const mainTemplate = await readFile(join(templateDir, `main.${mainExt}.ejs`), 'utf-8');
   const main = render(mainTemplate, { stories, addons: formatArray(addons), extras });
