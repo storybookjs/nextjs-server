@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "esnext",
+    "lib": ["es2020"],
+    "esModuleInterop": true,
+    "strict": true,
+    "moduleResolution": "node"
+  },
+  "ts-node": {
+    "esm": true
+  }
+}
