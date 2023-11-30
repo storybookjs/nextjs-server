@@ -8,6 +8,7 @@ jobs:
     name: Test
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
       - name: Install create-nextjs-storybook
         run: pnpm install
         working-directory: packages/create-nextjs-storybook
