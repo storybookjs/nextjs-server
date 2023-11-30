@@ -1,5 +1,6 @@
+'use client';
 import React from 'react';
-import './button.css';
+import styles from './button.module.css';
 
 interface ButtonProps {
   /**
@@ -38,7 +39,7 @@ export const Button = ({
   return (
     <button
       type="button"
-      className={['storybook-button', `storybook-button--${size}`, mode].join(' ')}
+      className={[styles['storybook-button'], styles[`storybook-button--${size}`], styles[mode]].join(' ')}
       {...props}
     >
       {label}

@@ -18,7 +18,7 @@ import { codeLog } from './cli/helpers.js';
 const logger = console;
 
 const DIRNAME = new URL('.', import.meta.url).pathname;
-const VERSION = '0.0.0-pr-24447-sha-d63baba1';
+const VERSION = '0.0.0-pr-24447-sha-83c43462';
 
 const getEmptyDirMessage = (packageManagerType: PackageManagerName) => {
   const generatorCommandsMap = {
@@ -81,8 +81,17 @@ const createConfig = async ({ appDir, language, srcDir, addons }: CreateOptions)
 
 const createStories = async ({ srcDir, appDir, language }: CreateOptions) => {
   const ext = language === SupportedLanguage.JAVASCRIPT ? 'js' : 'ts';
-  const templateDir = join(DIRNAME, '..', 'templates', appDir ? 'app' : 'pages', ext);
-  await cp(templateDir, join(process.cwd(), srcDir, 'stories'), { recursive: true });
+  const templateDir = join(DIRNAME, '..', 'templates');
+  const storiesDir = join(templateDir, appDir ? 'app' : 'pages', ext);
+  const outputDir = join(process.cwd(), srcDir, 'stories');
+
+  await cp(storiesDir, outputDir, { recursive: true });
+
+  await Promise.all(
+    ['page', 'header', 'button'].map((fname) =>
+      cp(join(templateDir, 'css', `${fname}.module.css`), join(outputDir, `${fname}.module.css`))
+    )
+  );
 };
 
 const updateNextConfig = async () => {
@@ -129,7 +138,7 @@ const init = async () => {
         '@storybook/addon-essentials',
         '@storybook/blocks',
         '@storybook/addon-interactions',
-        // FIXME: '@storybook/test',
+        '@storybook/test',
       ];
 
   const options = {
@@ -149,9 +158,8 @@ const init = async () => {
   logger.log(chalk.yellow('NOTE: installation is not 100% automated.\n'));
   logger.log(`To set up Storybook, replace contents of ${chalk.cyan('next-config.js')} with:\n`);
   codeLog([
-    "const withStorybook = require('@storybook/nextjs-server/next-config')();", // update
-    'const nextConfig = { /* your custom config here */ });',
-    'module.exports = withStorybook(nextConfig);',
+    "const withStorybook = require('@storybook/nextjs-server/next-config')({/* sb config */});",
+    'module.exports = withStorybook({/* next config */});',
   ]);
   logger.log('\n Then to run your NextJS app:\n');
   codeLog([packageManager.getRunCommand('dev')]);

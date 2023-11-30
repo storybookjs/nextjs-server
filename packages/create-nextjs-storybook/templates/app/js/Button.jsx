@@ -1,6 +1,8 @@
+'use client';
+
 import React from 'react';
 import PropTypes from 'prop-types';
-import './button.css';
+import styles from './button.module.css';
 
 /**
  * Primary UI component for user interaction
@@ -10,7 +12,7 @@ export const Button = ({ primary, backgroundColor, size, label, ...props }) => {
   return (
     <button
       type="button"
-      className={['storybook-button', `storybook-button--${size}`, mode].join(' ')}
+      className={[styles['storybook-button'], styles[`storybook-button--${size}`], styles[mode]].join(' ')}
       {...props}
     >
       {label}
