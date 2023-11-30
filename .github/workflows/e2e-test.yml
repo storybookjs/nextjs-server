@@ -26,4 +26,5 @@ jobs:
           cwd: scripts
           start: pnpm ts-node test.ts
           wait-on: 'http://localhost:3000'
+          wait-on-timeout: 300
           command: pnpm playwright test
