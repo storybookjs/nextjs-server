@@ -145,7 +145,7 @@ const init = async () => {
   const appDir = isAppDir(process.cwd());
   const corePackages = ['storybook', '@storybook/react', '@storybook/nextjs-server'];
   const addons = appDir
-    ? []
+    ? ['@storybook/addon-controls']
     : [
         '@storybook/addon-essentials',
         '@storybook/blocks',
