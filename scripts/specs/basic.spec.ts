@@ -38,6 +38,9 @@ test('should change story within a component', async ({ page }) => {
 test('should change component', async ({ page }) => {
   const storybookRoot = await goToStorybook(page);
 
+  // FIXME why is this necessary?
+  await new Promise((r) => setTimeout(r, 1000));
+
   await page.locator('#example-header').click();
   await page.locator('#example-header--logged-in').click();
 
