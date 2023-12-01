@@ -11,12 +11,7 @@ async function goToStorybook(page: Page, storyId = buttonId) {
   const preview = page.frameLocator('#storybook-preview-iframe');
   const root = preview.locator('#storybook-root:visible, #storybook-docs:visible');
 
-  const docsLoadingPage = root.locator('.sb-preparing-docs');
-  const storyLoadingPage = root.locator('.sb-preparing-story');
-  await docsLoadingPage.waitFor({ state: 'hidden' });
-  await storyLoadingPage.waitFor({ state: 'hidden' });
-
-  await root.locator('button').isVisible();
+  await expect(preview.locator('.sb-show-main')).toBeVisible();
 
   return root;
 }
