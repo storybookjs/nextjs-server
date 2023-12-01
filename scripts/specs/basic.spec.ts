@@ -27,15 +27,19 @@ test('should render button story when visited directly', async ({ page }) => {
 test('should change story within a component', async ({ page }) => {
   const storybookRoot = await goToStorybook(page);
 
+  // FIXME why is this necessary?
+  await new Promise((r) => setTimeout(r, 1000));
+
   await page.locator('#example-button--large').click();
 
-  await expect(storybookRoot.locator('button')).toHaveClass(/storybook-button--large/);
+  await expect(storybookRoot.locator('button')).toHaveClass(/button_storybook-button--large__/);
 });
 
 test('should change component', async ({ page }) => {
   const storybookRoot = await goToStorybook(page);
 
   await page.locator('#example-header').click();
+  await page.locator('#example-header--logged-in').click();
 
   await expect(storybookRoot.locator('button')).toHaveText('Log out');
 });
