@@ -16,6 +16,8 @@ async function goToStorybook(page: Page, storyId = buttonId) {
   await docsLoadingPage.waitFor({ state: 'hidden' });
   await storyLoadingPage.waitFor({ state: 'hidden' });
 
+  await root.locator('button').isVisible();
+
   return root;
 }
 
@@ -27,19 +29,13 @@ test('should render button story when visited directly', async ({ page }) => {
 test('should change story within a component', async ({ page }) => {
   const storybookRoot = await goToStorybook(page);
 
-  // FIXME why is this necessary?
-  await new Promise((r) => setTimeout(r, 1000));
-
   await page.locator('#example-button--large').click();
 
-  await expect(storybookRoot.locator('button')).toHaveClass(/button_storybook-button--large__/);
+  await expect(storybookRoot.locator('button')).toHaveClass(/storybook-button--large/);
 });
 
 test('should change component', async ({ page }) => {
   const storybookRoot = await goToStorybook(page);
-
-  // FIXME why is this necessary?
-  await new Promise((r) => setTimeout(r, 1000));
 
   await page.locator('#example-header').click();
   await page.locator('#example-header--logged-in').click();
