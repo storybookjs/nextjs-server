@@ -4,8 +4,9 @@ import { execa } from 'execa';
 import { join, resolve } from 'path';
 import { dedent } from 'ts-dedent';
 
-const version = '0.0.0-pr-24447-sha-191688a0';
+const version = '0.0.0-pr-25086-sha-fa16f873';
 const initCommandPath = resolve('../packages/create-nextjs-storybook/dist/index.js');
+const packagePath = resolve('../packages/nextjs-server');
 
 const sbPackages = [
   '@storybook/addon-essentials',
@@ -20,12 +21,18 @@ const sbPackages = [
 async function createSandbox({ dirName, appDir = true }: { dirName: string; appDir?: boolean }) {
   await remove(join(process.cwd(), dirName));
 
-  const createCommand = `yarn create next-app ${dirName} --typescript --no-src-dir --no-eslint --no-tailwind --import-alias=@/* ${
+  const createCommand = `pnpm create next-app ${dirName} --typescript --no-src-dir --no-eslint --no-tailwind --import-alias=@/* ${
     appDir ? '--app' : '--no-app'
   }`;
   await execa(createCommand.split(' ')[0], createCommand.split(' ').slice(1), { stdio: 'inherit' });
 
   await execa('node', [initCommandPath], {
+    cwd: dirName,
+    stdio: 'inherit',
+  });
+
+  const linkCommand = `pnpm link ${packagePath}`;
+  await execa(linkCommand.split(' ')[0], linkCommand.split(' ').slice(1), {
     cwd: dirName,
     stdio: 'inherit',
   });
