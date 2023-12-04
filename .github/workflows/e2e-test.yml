@@ -24,7 +24,7 @@ jobs:
         run: pnpm install
         working-directory: packages/nextjs-server
       - name: Build nextjs-server
-        run: pnpm build
+        run: pnpm prep
         working-directory: packages/nextjs-server
       - name: Run E2E Tests (pages dir)
         uses: BerniWittmann/background-server-action@v1
