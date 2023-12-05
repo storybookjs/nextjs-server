@@ -36,7 +36,7 @@ jobs:
           command: pnpm playwright test
         env:
           APP_DIR: false
-          STORYBOOK_VERIFY_PORT_DELAY: 2000
+          STORYBOOK_VERIFY_PORT_DELAY: 1000
           TMPDIR: ${{ runner.temp }}
       # Ensure all node processes are killed
       - run: killall node
@@ -49,5 +49,5 @@ jobs:
           wait-on-timeout: 300
           command: pnpm playwright test
         env:
-          STORYBOOK_VERIFY_PORT_DELAY: 2000
+          STORYBOOK_VERIFY_PORT_DELAY: 1000
           TMPDIR: ${{ runner.temp }}
