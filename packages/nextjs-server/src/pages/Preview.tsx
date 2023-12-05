@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import React from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation.js';
 import type { Renderer } from '@storybook/csf';
 import { createBrowserChannel } from '@storybook/channels';
 import { PreviewWithSelection, addons, UrlStore, WebView } from '@storybook/preview-api';
