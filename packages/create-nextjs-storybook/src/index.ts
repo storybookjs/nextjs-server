@@ -21,6 +21,8 @@ const logger = console;
 const DIRNAME = new URL('.', import.meta.url).pathname;
 const VERSION = '0.0.0-pr-24447-sha-c98bddd2';
 
+const ensureDirShallow = async (path: string) => mkdir(path).catch(() => {});
+
 const getEmptyDirMessage = (packageManagerType: PackageManagerName) => {
   const generatorCommandsMap = {
     npm: 'npm create',
@@ -64,7 +66,7 @@ const createConfig = async ({ appDir, language, srcDir, addons }: CreateOptions)
   const templateDir = join(DIRNAME, '..', 'templates', 'sb');
   const configDir = join(process.cwd(), '.storybook');
 
-  await mkdir(configDir).catch(() => {});
+  await ensureDirShallow(configDir);
 
   if (!appDir) {
     const previewFile = language == SupportedLanguage.JAVASCRIPT ? 'preview.jsx' : 'preview.tsx';
@@ -94,6 +96,23 @@ const createStories = async ({ srcDir, appDir, language }: CreateOptions) => {
       cp(join(templateDir, 'css', `${fname}.module.css`), join(outputDir, `${fname}.module.css`))
     )
   );
+};
+
+/**
+ * NextJS app router has problems if the routes are created dynamically on
+ * first startup, so let's try to create them on install.
+ */
+const createRoutes = async ({ srcDir, appDir, language }: CreateOptions) => {
+  if (!appDir) return;
+  const templateDir = join(DIRNAME, '..', 'templates', 'app', 'groupLayouts');
+
+  const groupDir = join(srcDir, 'app', '(sb)');
+  await ensureDirShallow(groupDir);
+  await cp(join(templateDir, 'layout-root.tsx'), join(groupDir, 'layout.tsx'));
+
+  const previewDir = join(groupDir, 'storybook-preview');
+  await ensureDirShallow(previewDir);
+  await cp(join(templateDir, 'layout-nested.tsx'), join(previewDir, 'layout.tsx'));
 };
 
 const updateNextConfig = async () => {
@@ -163,6 +182,7 @@ const init = async () => {
   await createConfig(options);
   status('Creating example stories', 1000);
   await createStories(options);
+  await createRoutes(options);
   await updateNextConfig();
   status('Installing package dependencies', 1500);
   await packageManager.addDependencies(
