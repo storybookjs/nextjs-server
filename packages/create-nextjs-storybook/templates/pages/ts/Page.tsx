@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Header } from './Header.js';
+import { Header } from './Header';
 import styles from './page.module.css';
 
 type User = {
@@ -19,7 +19,7 @@ export const Page: React.FC = () => {
         onCreateAccount={() => setUser({ name: 'Jane Doe' })}
       />
 
-      <section className={styles["storybook-page"]}>
+      <section className={styles['storybook-page']}>
         <h2>Pages in Storybook</h2>
         <p>
           We recommend building UIs with a{' '}
@@ -54,8 +54,8 @@ export const Page: React.FC = () => {
           </a>
           .
         </p>
-        <div className={styles["tip-wrapper"]}>
-          <span className={styles["tip"]}>Tip</span> Adjust the width of the canvas with the{' '}
+        <div className={styles['tip-wrapper']}>
+          <span className={styles['tip']}>Tip</span> Adjust the width of the canvas with the{' '}
           <svg width="10" height="10" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
             <g fill="none" fillRule="evenodd">
               <path

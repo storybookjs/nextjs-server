@@ -21,6 +21,8 @@ const logger = console;
 const DIRNAME = new URL('.', import.meta.url).pathname;
 const VERSION = '0.0.0-pr-24447-sha-c98bddd2';
 
+const ensureDirShallow = async (path: string) => mkdir(path).catch(() => {});
+
 const getEmptyDirMessage = (packageManagerType: PackageManagerName) => {
   const generatorCommandsMap = {
     npm: 'npm create',
@@ -64,7 +66,7 @@ const createConfig = async ({ appDir, language, srcDir, addons }: CreateOptions)
   const templateDir = join(DIRNAME, '..', 'templates', 'sb');
   const configDir = join(process.cwd(), '.storybook');
 
-  await mkdir(configDir).catch(() => {});
+  await ensureDirShallow(configDir);
 
   if (!appDir) {
     const previewFile = language == SupportedLanguage.JAVASCRIPT ? 'preview.jsx' : 'preview.tsx';
@@ -73,7 +75,8 @@ const createConfig = async ({ appDir, language, srcDir, addons }: CreateOptions)
 
   const mainExt = language === SupportedLanguage.JAVASCRIPT ? 'js' : 'ts';
   const stories = formatArray([`../${srcDir}**/*.stories.@(js|jsx|ts|tsx)`]);
-  const extras = appDir ? '' : "  docs: { autodocs: 'tag' },\n";
+  const extras =
+    "framework: '@storybook/nextjs-server',\n" + (appDir ? '' : "  docs: { autodocs: 'tag' },\n");
 
   const mainTemplate = await readFile(join(templateDir, `main.${mainExt}.ejs`), 'utf-8');
   const main = render(mainTemplate, { stories, addons: formatArray(addons), extras });
@@ -93,6 +96,23 @@ const createStories = async ({ srcDir, appDir, language }: CreateOptions) => {
       cp(join(templateDir, 'css', `${fname}.module.css`), join(outputDir, `${fname}.module.css`))
     )
   );
+};
+
+/**
+ * NextJS app router has problems if the routes are created dynamically on
+ * first startup, so let's try to create them on install.
+ */
+const createRoutes = async ({ srcDir, appDir, language }: CreateOptions) => {
+  if (!appDir) return;
+  const templateDir = join(DIRNAME, '..', 'templates', 'app', 'groupLayouts');
+
+  const groupDir = join(srcDir, 'app', '(sb)');
+  await ensureDirShallow(groupDir);
+  await cp(join(templateDir, 'layout-root.tsx'), join(groupDir, 'layout.tsx'));
+
+  const previewDir = join(groupDir, 'storybook-preview');
+  await ensureDirShallow(previewDir);
+  await cp(join(templateDir, 'layout-nested.tsx'), join(previewDir, 'layout.tsx'));
 };
 
 const updateNextConfig = async () => {
@@ -144,7 +164,7 @@ const init = async () => {
   const appDir = isAppDir(process.cwd());
   const corePackages = ['storybook', '@storybook/react', '@storybook/nextjs-server'];
   const addons = appDir
-    ? []
+    ? ['@storybook/addon-controls']
     : [
         '@storybook/addon-essentials',
         '@storybook/blocks',
@@ -162,6 +182,7 @@ const init = async () => {
   await createConfig(options);
   status('Creating example stories', 1000);
   await createStories(options);
+  await createRoutes(options);
   await updateNextConfig();
   status('Installing package dependencies', 1500);
   await packageManager.addDependencies(

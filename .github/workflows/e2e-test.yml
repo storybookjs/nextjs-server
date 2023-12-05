@@ -1,0 +1,53 @@
+name: End to End Tests
+
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Install scripts
+        run: pnpm install && pnpm exec playwright install
+        working-directory: scripts
+      - name: Install create-nextjs-storybook
+        run: pnpm install
+        working-directory: packages/create-nextjs-storybook
+      - name: Build create-nextjs-storybook
+        run: pnpm build
+        working-directory: packages/create-nextjs-storybook
+      - name: Install nextjs-server
+        run: pnpm install
+        working-directory: packages/nextjs-server
+      - name: Build nextjs-server
+        run: pnpm prep
+        working-directory: packages/nextjs-server
+      - name: Run E2E Tests (pages dir)
+        uses: BerniWittmann/background-server-action@v1
+        with:
+          cwd: scripts
+          start: pnpm ts-node test.ts
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 300
+          command: pnpm playwright test
+        env:
+          APP_DIR: false
+          STORYBOOK_VERIFY_PORT_DELAY: 1000
+          TMPDIR: ${{ runner.temp }}
+      # Ensure all node processes are killed
+      - run: killall node
+      - name: Run E2E Tests (app dir)
+        uses: BerniWittmann/background-server-action@v1
+        with:
+          cwd: scripts
+          start: pnpm ts-node test.ts
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 300
+          command: pnpm playwright test
+        env:
+          STORYBOOK_VERIFY_PORT_DELAY: 1000
+          TMPDIR: ${{ runner.temp }}
