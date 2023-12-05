@@ -58,7 +58,7 @@ async function createSandbox({ dirName, appDir = true }: { dirName: string; appD
 }
 
 async function startSandbox({ dirName }: { dirName: string }) {
-  execa('yarn', ['dev'], {
+  execa('pnpm', ['dev'], {
     cwd: dirName,
     stdio: 'inherit',
   });
