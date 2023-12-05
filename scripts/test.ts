@@ -1,22 +1,13 @@
-import { remove, move, outputFile } from 'fs-extra';
+import fsExtra from 'fs-extra';
 import { temporaryDirectory } from 'tempy';
 import { execa } from 'execa';
 import { join, resolve } from 'path';
 import { dedent } from 'ts-dedent';
 
-const version = '0.0.0-pr-25086-sha-fa16f873';
+const { remove, outputFile, readJson } = fsExtra;
+
 const initCommandPath = resolve('../packages/create-nextjs-storybook/dist/index.js');
 const packagePath = resolve('../packages/nextjs-server');
-
-const sbPackages = [
-  '@storybook/addon-essentials',
-  '@storybook/addon-interactions',
-  '@storybook/addon-links',
-  '@storybook/blocks',
-  '@storybook/nextjs-server',
-  '@storybook/react',
-  'storybook',
-];
 
 async function createSandbox({ dirName, appDir = true }: { dirName: string; appDir?: boolean }) {
   await remove(join(process.cwd(), dirName));
@@ -31,23 +22,12 @@ async function createSandbox({ dirName, appDir = true }: { dirName: string; appD
     stdio: 'inherit',
   });
 
-  const linkCommand = `pnpm link ${packagePath}`;
-  await execa(linkCommand.split(' ')[0], linkCommand.split(' ').slice(1), {
+  const { version } = await readJson('../packages/nextjs-server/package.json');
+  const installTarballCommand = `pnpm add -D ${packagePath}/storybook-nextjs-server-${version}.tgz`;
+  await execa(installTarballCommand.split(' ')[0], installTarballCommand.split(' ').slice(1), {
     cwd: dirName,
     stdio: 'inherit',
   });
-
-  // const initCommand = `npx sb@${version} init --yes`;
-  // await execa(initCommand.split(' ')[0], initCommand.split(' ').slice(1), {
-  //   cwd: dirName,
-  //   stdio: 'inherit',
-  // });
-
-  // // Workaround issue in SB init where it always installs the latest version of packages
-  // await execa('yarn', ['add', '--dev', ...sbPackages.map((name) => `${name}@${version}`)], {
-  //   cwd: dirName,
-  //   stdio: 'inherit',
-  // });
 
   const nextConfig = dedent`const withStorybook  = require('@storybook/nextjs-server/next-config')();
     const nextConfig = withStorybook({
