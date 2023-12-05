@@ -81,7 +81,10 @@ export const verifyPort = (
     try {
       const writePidFile = appDir ? writePidFileApp : writePidFilePages;
       await writePidFile({ pid, ppid, port, appDir, previewPath });
-      setTimeout(() => checkPidRoute({ pid, ppid, port, appDir, previewPath }), 100);
+      setTimeout(
+        () => checkPidRoute({ pid, ppid, port, appDir, previewPath }),
+        parseInt(process.env.STORYBOOK_VERIFY_PORT_DELAY ?? '100', 10)
+      );
     } catch (e) {
       console.error(e);
     }
