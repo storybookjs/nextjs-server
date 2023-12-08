@@ -1,8 +1,8 @@
 # Storybook Next.js Server
 
-An embedded version of [Storybook](https://storybook.js.org/) that runs **inside** your Next.js dev server.
+An experimental embedded version of [Storybook](https://storybook.js.org/) that runs **inside** your Next.js dev server.
 
-To use, run the installer from the root of your Next.js project:
+To install, run the installer from the root of your Next.js project:
 
 ```
 npm create nextjs-storybook

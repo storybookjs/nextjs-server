@@ -1,8 +1,8 @@
 ## Create Next.js Storybook
 
-Automated installer for `@storybook/nextjs-server`, an embedded version of [Storybook]https://storybook.js.org/) that runs **inside** your Next.js dev server.
+Automated installer for `@storybook/nextjs-server`, an experimental embedded version of [Storybook](https://storybook.js.org/) that runs **inside** your Next.js dev server.
 
-To use, run the installer from the root of your Next.js project:
+To install, run the installer from the root of your Next.js project:
 
 ```
 npm create nextjs-storybook
