@@ -1,6 +1,6 @@
 {
   "name": "create-nextjs-storybook",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Install embedded Storybook route into a NextJS project",
   "type": "module",
   "license": "MIT",
@@ -11,7 +11,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc --jsx react"
   },
-  "keywords": ["storybook", "nextjs", "nextjs-server", "embedded", "components", "installer"],
+  "keywords": [
+    "storybook",
+    "nextjs",
+    "nextjs-server",
+    "embedded",
+    "components",
+    "installer"
+  ],
   "module": "dist/index.js",
   "author": "",
   "devDependencies": {
