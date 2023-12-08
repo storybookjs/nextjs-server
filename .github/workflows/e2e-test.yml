@@ -14,18 +14,10 @@ jobs:
       - name: Install scripts
         run: pnpm install && pnpm exec playwright install
         working-directory: scripts
-      - name: Install create-nextjs-storybook
+      - name: Install packages
         run: pnpm install
-        working-directory: packages/create-nextjs-storybook
-      - name: Build create-nextjs-storybook
-        run: pnpm build
-        working-directory: packages/create-nextjs-storybook
-      - name: Install nextjs-server
-        run: pnpm install
-        working-directory: packages/nextjs-server
-      - name: Build nextjs-server
-        run: pnpm prep
-        working-directory: packages/nextjs-server
+      - name: Build packages
+        run: pnpm run -r build
       - name: Package nextjs-server
         run: pnpm pack
         working-directory: packages/nextjs-server

@@ -74,3 +74,4 @@ The `withStorybook` function accepts several configuration options, all of which
 | **previewPath** | URL path to Storybook's story preview iframe. | 'storybook-preview'      |
 | **configDir**   | Directory where Storybook's config files are. | '.storybook'             |
 | **appDir**      | Whether to use the NextJS app directory.      | undefined                |
+
