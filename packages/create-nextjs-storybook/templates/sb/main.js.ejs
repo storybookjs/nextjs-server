@@ -1,0 +1,8 @@
+/** @type { import('@storybook/nextjs-server').StorybookConfig } */
+const config = {
+  stories: <%- stories %>,
+  addons: <%- addons %>,
+  framework: { name: '@storybook/nextjs-server', options: {} },
+<%- extras %>};
+
+export default config;

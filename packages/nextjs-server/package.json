@@ -1,0 +1,139 @@
+{
+  "name": "@storybook/nextjs-server",
+  "private": true,
+  "version": "8.0.0-alpha.0",
+  "description": "Storybook for NextJS Server: Embedded server-side rendering",
+  "keywords": [
+    "storybook",
+    "nextjs"
+  ],
+  "homepage": "https://github.com/storybookjs/nextjs-server/tree/next/packages/nextjs-server",
+  "bugs": {
+    "url": "https://github.com/storybookjs/nextjs-server/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/storybookjs/nextjs-server.git",
+    "directory": "code/frameworks/nextjs-server"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "node": "./dist/index.js",
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    },
+    "./preset": {
+      "types": "./dist/preset.d.ts",
+      "require": "./dist/preset.js"
+    },
+    "./plugin": {
+      "types": "./dist/plugin.d.ts",
+      "require": "./dist/plugin.js"
+    },
+    "./mock": {
+      "types": "./dist/mock.d.ts",
+      "node": "./dist/mock.js",
+      "require": "./dist/mock.js",
+      "import": "./dist/mock.mjs"
+    },
+    "./next-config": {
+      "node": "./dist/next-config.js"
+    },
+    "./pages": {
+      "types": "./dist/pages/index.d.ts",
+      "import": "./dist/pages/index.mjs"
+    },
+    "./channels": {
+      "types": "./dist/reexports/channels.d.ts",
+      "node": "./dist/reexports/channels.js",
+      "require": "./dist/reexports/channels.js",
+      "import": "./dist/reexports/channels.mjs"
+    },
+    "./core-events": {
+      "types": "./dist/reexports/core-events.d.ts",
+      "node": "./dist/reexports/core-events.js",
+      "require": "./dist/reexports/core-events.js",
+      "import": "./dist/reexports/core-events.mjs"
+    },
+    "./preview-api": {
+      "types": "./dist/reexports/preview-api.d.ts",
+      "node": "./dist/reexports/preview-api.js",
+      "require": "./dist/reexports/preview-api.js",
+      "import": "./dist/reexports/preview-api.mjs"
+    },
+    "./types": {
+      "types": "./dist/reexports/types.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "template/**/*",
+    "README.md",
+    "*.js",
+    "*.d.ts"
+  ],
+  "scripts": {
+    "check": "node --loader ../../scripts/node_modules/esbuild-register/loader.js -r ../../scripts/node_modules/esbuild-register/register.js ../../scripts/prepare/check.ts",
+    "build": "node --loader ../../scripts/node_modules/esbuild-register/loader.js -r ../../scripts/node_modules/esbuild-register/register.js ../../scripts/prepare/bundle.ts"
+  },
+  "dependencies": {
+    "@babel/core": "^7.22.9",
+    "@babel/types": "^7.22.5",
+    "@storybook/channels": "0.0.0-pr-25086-sha-fa16f873",
+    "@storybook/core-common": "0.0.0-pr-25086-sha-fa16f873",
+    "@storybook/core-events": "0.0.0-pr-25086-sha-fa16f873",
+    "@storybook/core-server": "0.0.0-pr-25086-sha-fa16f873",
+    "@storybook/csf-tools": "0.0.0-pr-25086-sha-fa16f873",
+    "@storybook/node-logger": "0.0.0-pr-25086-sha-fa16f873",
+    "@storybook/preview-api": "0.0.0-pr-25086-sha-fa16f873",
+    "@storybook/react": "0.0.0-pr-25086-sha-fa16f873",
+    "@storybook/types": "0.0.0-pr-25086-sha-fa16f873",
+    "@storybook/csf": "^0.1.2",
+    "@types/node": "^18.0.0",
+    "@types/react": "^18",
+    "fs-extra": "^11.1.0",
+    "ts-dedent": "^2.0.0",
+    "unplugin": "^1.3.1"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.1",
+    "typescript": "^5.3.2"
+  },
+  "peerDependencies": {
+    "next": "^14",
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "bundler": {
+    "entries": [
+      "./src/index.ts",
+      "./src/null-builder.ts",
+      "./src/null-renderer.ts",
+      "./src/preset.ts",
+      "./src/mock.ts",
+      "./src/next-config.cts",
+      "./src/pages/index.ts",
+      "./src/reexports/channels.ts",
+      "./src/reexports/core-events.ts",
+      "./src/reexports/preview-api.ts",
+      "./src/reexports/types.ts"
+    ],
+    "platform": "node"
+  }
+}

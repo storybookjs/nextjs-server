@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "NodeNext",
+    "target": "es2022",
+    "module": "NodeNext",
+    "outDir": "./dist",
+    // thanks yarn
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "templates"
+  ]
+}
