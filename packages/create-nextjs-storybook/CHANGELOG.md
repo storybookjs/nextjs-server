@@ -1,5 +1,11 @@
 # create-nextjs-storybook
 
+## 0.0.3
+
+### Patch Changes
+
+- Fix README typo
+
 ## 0.0.2
 
 ### Patch Changes
