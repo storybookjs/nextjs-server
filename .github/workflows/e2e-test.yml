@@ -14,7 +14,7 @@ jobs:
       - name: Install all
         run: pnpm -r install
       - name: Install scripts
-        run: pnpm install && pnpm exec playwright install
+        run: pnpm exec playwright install
         working-directory: scripts
       - name: Build packages
         run: pnpm -r build
