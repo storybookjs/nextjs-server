@@ -1,0 +1,12 @@
+{
+  "mode": "pre",
+  "tag": "alpha",
+  "initialVersions": {
+    "create-nextjs-storybook": "0.0.3",
+    "@storybook/nextjs-server": "8.0.0-alpha.0",
+    "@storybook/nextjs-server-scripts": "0.0.0"
+  },
+  "changesets": [
+    "chatty-falcons-cheer"
+  ]
+}
