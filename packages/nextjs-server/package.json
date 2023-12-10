@@ -1,6 +1,5 @@
 {
   "name": "@storybook/nextjs-server",
-  "private": true,
   "version": "0.0.1",
   "description": "Storybook for NextJS Server: Embedded server-side rendering",
   "keywords": [
