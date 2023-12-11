@@ -57,7 +57,7 @@ export const appIndexer = (
 
           const pageTsx = dedent`
             import React from 'react';
-            import { composeStory } from '@storybook/react/testing-api';
+            import { composeStory } from '@storybook/react';
             import { getArgs } from '../components/args';
             import { Prepare, StoryAnnotations } from '../components/Prepare';
             import { Args } from '@storybook/react';
@@ -68,7 +68,7 @@ export const appIndexer = (
               const Composed = composeStory(stories.${exportName}, stories.default, projectAnnotations?.default || {}, '${exportName}');
               const extraArgs = await getArgs(Composed.id);
               
-              const { id, parameters, argTypes, initialArgs } = Composed;
+              const { id, parameters, argTypes, args: initialArgs } = Composed;
               const args = { ...initialArgs, ...extraArgs };
               
               const storyAnnotations: StoryAnnotations<Args> = {
