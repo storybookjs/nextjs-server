@@ -162,7 +162,7 @@ const init = async () => {
   const language = await detectLanguage(packageManager);
 
   const appDir = isAppDir(process.cwd());
-  const corePackages = ['storybook', '@storybook/react', '@storybook/nextjs-server'];
+  const corePackages = ['storybook', '@storybook/react'];
   const addons = appDir
     ? ['@storybook/addon-controls']
     : [
@@ -185,10 +185,10 @@ const init = async () => {
   await createRoutes(options);
   await updateNextConfig();
   status('Installing package dependencies', 1500);
-  await packageManager.addDependencies(
-    { installAsDevDependencies: true },
-    _version([...corePackages, ...addons])
-  );
+  await packageManager.addDependencies({ installAsDevDependencies: true }, [
+    '@storybook/nextjs-server',
+    ..._version([...corePackages, ...addons]),
+  ]);
 
   done = true;
   spinner.succeed('Done!');
