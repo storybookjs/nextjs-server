@@ -68,7 +68,7 @@ export const appIndexer = (
               const Composed = composeStory(stories.${exportName}, stories.default, projectAnnotations?.default || {}, '${exportName}');
               const extraArgs = await getArgs(Composed.id);
               
-              const { id, parameters, argTypes, initialArgs } = Composed;
+              const { id, parameters, argTypes, args: initialArgs } = Composed;
               const args = { ...initialArgs, ...extraArgs };
               
               const storyAnnotations: StoryAnnotations<Args> = {
