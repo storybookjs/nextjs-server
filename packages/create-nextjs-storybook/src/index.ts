@@ -19,7 +19,7 @@ import { codeLog } from './cli/helpers.js';
 const logger = console;
 
 const DIRNAME = new URL('.', import.meta.url).pathname;
-const VERSION = '0.0.0-pr-25086-sha-b3010f16';
+const VERSION = 'next';
 
 const ensureDirShallow = async (path: string) => mkdir(path).catch(() => {});
 
