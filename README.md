@@ -1,6 +1,6 @@
 <h1>Storybook NextJS Server</h1>
 
-Storybook NextJS server is a **highly experimental** framework to build React Server Components in isolation. Unlike the stable `@storybook/nextjs`, it is embedded **inside** your NextJS app and rendered by NextJS.
+Storybook NextJS server is a **highly experimental** framework to build React components in isolation. Unlike the stable `@storybook/nextjs`, it is embedded **inside** your NextJS app and rendered by NextJS.
 
 This has a few key benefits:
 
