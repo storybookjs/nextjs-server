@@ -57,7 +57,7 @@ export const appIndexer = (
 
           const pageTsx = dedent`
             import React from 'react';
-            import { composeStory } from '@storybook/react/testing-api';
+            import { composeStory } from '@storybook/react';
             import { getArgs } from '../components/args';
             import { Prepare, StoryAnnotations } from '../components/Prepare';
             import { Args } from '@storybook/react';
