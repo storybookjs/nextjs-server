@@ -1,5 +1,11 @@
 # @storybook/nextjs-server
 
+## 0.0.3
+
+### Patch Changes
+
+- b097bb8: Fix src dir support
+
 ## 0.0.2
 
 ### Patch Changes
