@@ -1,6 +1,6 @@
 import { join, dirname } from 'path';
 import { ensureDir, exists, writeFile } from 'fs-extra';
-import { getAppDir, getPagesDir, getSrcDir } from './utils';
+import { getAppDir, getPagesDir } from './utils';
 
 interface VerifyOptions {
   pid: number;
@@ -11,7 +11,7 @@ interface VerifyOptions {
 }
 
 const writePidFilePages = async ({ previewPath }: VerifyOptions) => {
-  const pagesDir = getPagesDir() ?? join(getSrcDir(), 'pages');
+  const pagesDir = getPagesDir({ createIfMissing: true })!;
   const pidFile = join(pagesDir, previewPath, 'pid.tsx');
 
   if (await exists(pidFile)) return;
@@ -35,7 +35,7 @@ const writePidFilePages = async ({ previewPath }: VerifyOptions) => {
 };
 
 const writePidFileApp = async ({ previewPath }: VerifyOptions) => {
-  const appDir = getAppDir() ?? join(getSrcDir(), 'app');
+  const appDir = getAppDir({ createIfMissing: true })!;
   const pidFile = join(appDir, '(sb)', previewPath, 'pid', 'page.tsx');
 
   if (await exists(pidFile)) return;
