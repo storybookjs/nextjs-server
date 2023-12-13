@@ -1,5 +1,11 @@
 # @storybook/nextjs-server
 
+## 0.0.4
+
+### Patch Changes
+
+- 2c61a7b: Clean up src dir support
+
 ## 0.0.3
 
 ### Patch Changes
