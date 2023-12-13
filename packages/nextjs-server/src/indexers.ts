@@ -5,6 +5,7 @@ import { dedent } from 'ts-dedent';
 import type { Indexer, PreviewAnnotation } from '@storybook/types';
 import { loadCsf } from '@storybook/csf-tools';
 import type { StorybookNextJSOptions } from './types';
+import { getAppDir, getPagesDir, getSrcDir } from './utils';
 
 const LAYOUT_FILES = ['layout.tsx', 'layout.jsx'];
 
@@ -22,7 +23,7 @@ export const appIndexer = (
       const inputAppDir = resolve(__dirname, '../template/app');
       const inputGroupDir = join(inputAppDir, 'groupLayouts');
       const inputStorybookDir = join(inputAppDir, 'storybook-preview');
-      const appDir = join(process.cwd(), 'app');
+      let appDir = getAppDir() ?? join(getSrcDir(), 'app');
       const sbGroupDir = join(appDir, '(sb)');
       const storybookDir = join(sbGroupDir, previewPath);
       await ensureDir(storybookDir);
@@ -112,8 +113,8 @@ export const pagesIndexer = (
       const code = (await readFile(fileName, 'utf-8')).toString();
       const csf = await loadCsf(code, { ...opts, fileName }).parse();
 
-      const routeDir = 'pages';
-      const storybookDir = join(process.cwd(), routeDir, previewPath);
+      const pagesDir = getPagesDir() ?? join(getSrcDir(), 'pages');
+      const storybookDir = join(pagesDir, previewPath);
       await ensureDir(storybookDir);
 
       const indexTsx = dedent`

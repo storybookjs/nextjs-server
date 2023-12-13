@@ -1,9 +1,9 @@
 import type { NextConfig } from 'next';
 import type { ChildProcess } from 'child_process';
 import { spawn } from 'child_process';
-import { existsSync } from 'fs';
 import type { StorybookNextJSOptions } from './types';
 import { verifyPort } from './verifyPort';
+import { getAppDir } from './utils';
 
 const logger = console;
 let childProcess: ChildProcess | undefined;
@@ -94,7 +94,7 @@ const withStorybook = ({
   configDir = '.storybook',
   appDir = undefined,
 }: Partial<WithStorybookOptions> = {}) => {
-  const isAppDir = appDir ?? existsSync('app');
+  const isAppDir = appDir ?? !!getAppDir();
   const storybookNextJSOptions: StorybookNextJSOptions = {
     appDir: isAppDir,
     managerPath,
