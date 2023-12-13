@@ -1,6 +1,6 @@
 {
   "name": "create-nextjs-storybook",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Install embedded Storybook route into a NextJS project",
   "type": "module",
   "license": "MIT",

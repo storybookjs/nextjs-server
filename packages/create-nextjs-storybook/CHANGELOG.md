@@ -1,5 +1,11 @@
 # create-nextjs-storybook
 
+## 0.0.4
+
+### Patch Changes
+
+- Install next version of storybook
+
 ## 0.0.3
 
 ### Patch Changes
