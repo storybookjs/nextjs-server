@@ -94,7 +94,7 @@ const withStorybook = ({
   configDir = '.storybook',
   appDir = undefined,
 }: Partial<WithStorybookOptions> = {}) => {
-  const isAppDir = appDir ?? !!getAppDir();
+  const isAppDir = appDir ?? !!getAppDir({ createIfMissing: false });
   const storybookNextJSOptions: StorybookNextJSOptions = {
     appDir: isAppDir,
     managerPath,
