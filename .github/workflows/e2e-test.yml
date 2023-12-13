@@ -7,20 +7,34 @@ jobs:
     runs-on: ubuntu-latest
     name: Test
     steps:
-      - uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          version: 8
-      - name: Install all
-        run: pnpm -r install
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
       - name: Build packages
         run: pnpm -r build
+
       - name: Package nextjs-server
         run: pnpm pack
         working-directory: packages/nextjs-server
-      - name: Install playwright
+
+      - name: Install Playwright
         run: pnpm exec playwright install
         working-directory: scripts
+
       - name: Run E2E Tests (pages dir)
         uses: BerniWittmann/background-server-action@v1
         with:
@@ -33,8 +47,10 @@ jobs:
           APP_DIR: false
           STORYBOOK_VERIFY_PORT_DELAY: 1000
           TMPDIR: ${{ runner.temp }}
-      # Ensure all node processes are killed
-      - run: killall node
+
+      - name: Kill all Node.js processes
+        run: killall node
+
       - name: Run E2E Tests (app dir)
         uses: BerniWittmann/background-server-action@v1
         with:
