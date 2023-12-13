@@ -9,12 +9,20 @@ const { remove, outputFile, readJson } = fsExtra;
 const initCommandPath = resolve('../packages/create-nextjs-storybook/dist/index.js');
 const packagePath = resolve('../packages/nextjs-server');
 
-async function createSandbox({ dirName, appDir = true }: { dirName: string; appDir?: boolean }) {
+async function createSandbox({
+  dirName,
+  appDir = true,
+  srcDir = false,
+}: {
+  dirName: string;
+  appDir?: boolean;
+  srcDir?: boolean;
+}) {
   await remove(join(process.cwd(), dirName));
 
-  const createCommand = `pnpm create next-app ${dirName} --typescript --no-src-dir --no-eslint --no-tailwind --import-alias=@/* ${
-    appDir ? '--app' : '--no-app'
-  }`;
+  const app = appDir ? '--app' : '--no-app';
+  const src = srcDir ? '--src-dir' : '--no-src-dir';
+  const createCommand = `pnpm create next-app ${dirName} --typescript --no-eslint --no-tailwind --import-alias=@/* ${app} ${src}`;
   await execa(createCommand.split(' ')[0], createCommand.split(' ').slice(1), { stdio: 'inherit' });
 
   await execa('node', [initCommandPath], {
@@ -46,9 +54,10 @@ async function startSandbox({ dirName }: { dirName: string }) {
 
 async function go() {
   const appDir = process.env.APP_DIR !== 'false';
+  const srcDir = process.env.SRC_DIR && process.env.SRC_DIR !== 'false';
 
   const dirName = temporaryDirectory();
-  await createSandbox({ dirName, appDir });
+  await createSandbox({ dirName, appDir, srcDir });
   await startSandbox({ dirName });
 }
 
