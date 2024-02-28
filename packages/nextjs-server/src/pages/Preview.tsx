@@ -20,6 +20,32 @@ type GetProjectAnnotations = Parameters<
   PreviewWithSelection<Renderer>['initialize']
 >[0]['getProjectAnnotations'];
 
+function isInSBMode() {
+  return document.location.href.match(/storybook/);
+}
+
+class MaybeWebView extends WebView {
+  showMode(mode: any) {
+    if (isInSBMode()) {
+      return super.showMode(mode);
+    }
+  }
+
+  storyRoot() {
+    if (isInSBMode()) {
+      return super.storyRoot();
+    }
+    return null;
+  }
+
+  docsRoot() {
+    if (isInSBMode()) {
+      return super.docsRoot();
+    }
+    return null;
+  }
+}
+
 export const Preview = ({
   getProjectAnnotations,
   previewPath,
@@ -45,7 +71,7 @@ export const Preview = ({
         previewImportFn,
         getProjectAnnotations,
         new StaticUrlStore(),
-        new WebView()
+        new MaybeWebView()
       );
 
       window.__STORYBOOK_PREVIEW__ = preview;
