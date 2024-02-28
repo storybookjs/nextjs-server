@@ -34,18 +34,20 @@ export const Preview = ({
   // our own version of that
   if (typeof window !== 'undefined') {
     if (!window.__STORYBOOK_PREVIEW__) {
-      console.log('creating preview');
+      console.log('creating preview', { getProjectAnnotations, StaticUrlStore, WebView });
       const channel = createBrowserChannel({ page: 'preview' });
       addons.setChannel(channel);
       window.__STORYBOOK_ADDONS_CHANNEL__ = channel;
 
-      const preview = new PreviewWithSelection(new StaticUrlStore(), new WebView());
-
-      preview.initialize({
-        importFn: (path) =>
-          importFn(preview.storyStore.storyIndex!.entries, router, previewPath, path),
+      const previewImportFn = (path: string) =>
+        importFn(preview.storyStore.storyIndex!.entries, router, previewPath, path);
+      const preview = new PreviewWithSelection(
+        previewImportFn,
         getProjectAnnotations,
-      });
+        new StaticUrlStore(),
+        new WebView()
+      );
+
       window.__STORYBOOK_PREVIEW__ = preview;
     }
 
