@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation.js';
 import type { Renderer } from '@storybook/csf';
 import { createBrowserChannel } from '@storybook/channels';
@@ -20,29 +20,45 @@ type GetProjectAnnotations = Parameters<
   PreviewWithSelection<Renderer>['initialize']
 >[0]['getProjectAnnotations'];
 
-function isInSBMode() {
-  return document.location.href.match(/storybook/);
+if (typeof window !== 'undefined') {
+  window.isInSBMode = false;
 }
+
+enum Mode {
+  'MAIN' = 'MAIN',
+  'NOPREVIEW' = 'NOPREVIEW',
+  'PREPARING_STORY' = 'PREPARING_STORY',
+  'PREPARING_DOCS' = 'PREPARING_DOCS',
+  'ERROR' = 'ERROR',
+}
+const classes: Record<Mode, string> = {
+  PREPARING_STORY: 'sb-show-preparing-story',
+  PREPARING_DOCS: 'sb-show-preparing-docs',
+  MAIN: 'sb-show-main',
+  NOPREVIEW: 'sb-show-nopreview',
+  ERROR: 'sb-show-errordisplay',
+};
 
 class MaybeWebView extends WebView {
   showMode(mode: any) {
-    if (isInSBMode()) {
-      return super.showMode(mode);
-    }
+    clearTimeout(this.preparingTimeout);
+    Object.keys(Mode).forEach((otherMode) => {
+      if (otherMode === mode) {
+        document.querySelector('#storybook-body').classList.add(classes[otherMode]);
+      } else {
+        document.querySelector('#storybook-body').classList.remove(classes[otherMode as Mode]);
+      }
+    });
   }
+  showStoryDuringRender() {}
+  applyLayout() {}
 
   storyRoot() {
-    if (isInSBMode()) {
-      return super.storyRoot();
-    }
-    return null;
+    return document.querySelector('#storybook-body #storybook-root');
   }
 
   docsRoot() {
-    if (isInSBMode()) {
-      return super.docsRoot();
-    }
-    return null;
+    return document.querySelector('#storybook-body #storybook-docs');
   }
 }
 
@@ -75,14 +91,19 @@ export const Preview = ({
       );
 
       window.__STORYBOOK_PREVIEW__ = preview;
+
+      // hack for a sec
+      window.__NEXT_ROUTER = router;
     }
 
-    // Render the the SB UI (ie iframe.html / preview.ejs) in a non-react way to ensure
-    // it doesn't get ripped down when a new route renders
-    if (!document.querySelector('#storybook-root')) {
-      document.body.innerHTML += previewHtml;
-    }
+    setTimeout(() => {
+      // Render the the SB UI (ie iframe.html / preview.ejs) in a non-react way to ensure
+      // it doesn't get ripped down when a new route renders
+      if (!document.querySelector('#storybook-root')) {
+        document.querySelector('#storybook-body').innerHTML += previewHtml;
+      }
+    });
   }
 
-  return <></>;
+  return <div id="storybook-body"></div>;
 };
